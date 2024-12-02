@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Retirement Calculator</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="Description" content="Simple retirement fund calculator that help you calculate how much money you want to save up before retiring">
+<script data-ad-client="ca-pub-8243563881611636" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<style>
+    body {
+        font-family: sans-serif;
+        font-size: 1.1rem;
+    }
+
+    div {
+        margin: 0.3rem 0.1rem;
+        padding: 0.2rem 0.1rem;
+    }
+
+    input {
+        font-size: 1.1rem;
+        border-radius: 3px;
+        text-align: center;
+        width: 10rem;
+    }
+
+    button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 0.1rem 0.2rem;
+        border-radius: 3px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1.1rem;
+    }
+
+    b {
+        font-size: 1.5rem;
+    }
+
+    #message {
+        color: grey;
+        font-size: 1rem;
+    }
+
+    @media (max-width: 428px) {
+        button {
+            display: block;
+        }
+
+        #message {
+            font-size: 0.8rem;
+        }
+    }
+</style>
+</head>
+
+<body>
+    <div>
+        <label for="life_expectancy">Life Expectancy</label>
+        <input type="number" name="life_expectancy" id="life_expectancy" value="30" min="0"> years<br>
+    </div>
+    <div>
+        <label for="savings">Retirement Fund</label>
+        <input type="number" name="savings" id="savings" value="18000000" step="100000"> <button type="button" onclick="fixFund()">Fix this</button><br>
+    </div>
+    <div>
+        <label for="allowance_per_month">Allowance Per Month</label>
+        <input type="number" name="allowance_per_month" id="allowance_per_month" value="50000" step="1000"> <button type="button" onclick="fixAllowance()">Fix this</button><br>
+    </div>
+    <div>
+        <label for="inflation_rate">Inflation Rate</label>
+        <input type="number" name="inflation_rate" id="inflation_rate" value="6"> %<br>
+    </div>
+    <div>
+        <label for="intrest_rate">Intrest Rate</label>
+        <input type="number" name="intrest_rate" id="intrest_rate" value="5"> %<br>
+    </div>
+    <div>
+        <br>
+        <label id="message"></label><br>
+        <br>
+        <label id="statement"></label>
+    </div>
+    <script>
+		console.log(getLang())
+        let life_expectancy = document.getElementById('life_expectancy')
+        let savings = document.getElementById('savings')
+        let allowance_per_month = document.getElementById('allowance_per_month')
+        let inflation_rate = document.getElementById('inflation_rate')
+        let intrest_rate = document.getElementById('intrest_rate')
+        let message = document.getElementById('message')
+        let statement = document.getElementById('statement')
+        let retirement = calculateRetirement(true)
+
+        life_expectancy.oninput = function(){
+            message.innerHTML = 'You expect to live ' + formatMoney(life_expectancy.value) + ' years from retirement.'
+            console.clear()
+            retirement = calculateRetirement(true)
+        }
+
+        savings.oninput = function(){
+            message.innerHTML = 'You\'ve saved up ' + formatMoney(savings.value) + ' in your retirement fund.'
+            console.clear()
+            retirement = calculateRetirement(true)
+        }
+
+        allowance_per_month.oninput = function(){
+            message.innerHTML = 'You want to have ' + formatMoney(allowance_per_month.value) + ' free to use per month.'
+            console.clear()
+            retirement = calculateRetirement(true)
+        }
+
+        inflation_rate.oninput = function(){
+            message.innerHTML = 'To your best knowledge, the inflation rate is ' + inflation_rate.value + '%.'
+            console.clear()
+            retirement = calculateRetirement(true)
+        }
+
+        intrest_rate.oninput = function(){
+            message.innerHTML = 'You expect to gain ' + intrest_rate.value + '% intrest every year after you retire.'
+            console.clear()
+            retirement = calculateRetirement(true)
+        };
+
+        function calculateRetirement(log = false) {
+
+            if(isNaN(life_expectancy.value)) return
+            if(isNaN(savings.value)) return
+            if(isNaN(allowance_per_month.value)) return
+            if(isNaN(inflation_rate.value)) return
+            if(isNaN(intrest_rate.value)) return
+
+            let le = parseFloat(life_expectancy.value)
+            let retirement = parseFloat(savings.value)
+            let apm = parseFloat(allowance_per_month.value)
+            let ifr = parseFloat(inflation_rate.value) * 0.01
+            let itr = parseFloat(intrest_rate.value) * 0.01
+
+            let ys = 12 * apm
+
+            for(let i = 0; i <= le; i++) {
+                if(log)
+                    console.log(i + ' year summary: remaining: '+ retirement+', spent: '+ys)
+                retirement -= ys
+                if(retirement >= 0)
+                    retirement *= itr + 1
+                ys *= ifr + 1
+            }
+
+            if(retirement >= 0) {
+                statement.innerHTML = 'You will have <b style="color: lime;">' + formatMoney(Math.floor(retirement)) + '</b> remaining to pass on to your children'
+            } else {
+                statement.innerHTML = 'You will need <b style="color: red;">' + formatMoney(Math.ceil(-retirement)) + '</b> from your children after retirement'
+            }
+            return retirement
+        }
+
+        function fixFund() {
+
+            if(isNaN(life_expectancy.value)) return
+            if(isNaN(savings.value)) return
+            if(isNaN(allowance_per_month.value)) return
+            if(isNaN(inflation_rate.value)) return
+            if(isNaN(intrest_rate.value)) return
+            if(savings.value == '') {
+                savings.value = 0
+                retirement = calculateRetirement()
+            }
+
+            let original = parseInt(savings.value)
+            let fund = parseInt(savings.value)
+
+            if(retirement < 0) {
+                console.clear()
+                if(fund == 0) fund++
+                while(retirement < 0) {
+                    fund *= 10
+                    console.log('testing ' + fund)
+                    savings.value = fund
+                    retirement = calculateRetirement()
+                }
+                let step = Math.pow(10, Math.floor(Math.log10(fund)))
+                while(step > 0) {
+                    while(retirement > 0 && fund > step) {
+                        fund -= step
+                        console.log('testing ' + fund)
+                        savings.value = fund
+                        retirement = calculateRetirement()
+                    }
+                    if(retirement == 0) break;
+                    if(retirement < 0) {
+                        fund+=step
+                        console.warn('not enough, reverting back to ' + fund)
+                        savings.value = fund
+                        retirement = calculateRetirement()
+                    }
+                    step = Math.floor(step/10)
+                }
+                message.innerHTML = 'You need (' + formatMoney(fund) + ' - ' + formatMoney(original) + ' = ) ' + formatMoney(fund - original) + ' more in retirement fund.'
+            } else {
+                message.innerHTML = 'No need to fix.'
+            }
+
+        }
+
+        function fixAllowance() {
+
+            if(isNaN(life_expectancy.value)) return
+            if(isNaN(savings.value)) return
+            if(isNaN(allowance_per_month.value)) return
+            if(isNaN(inflation_rate.value)) return
+            if(isNaN(intrest_rate.value)) return
+
+            if(allowance_per_month.value == '') {
+                allowance_per_month.value = 0
+                retirement = calculateRetirement()
+            }
+
+            let original = parseInt(allowance_per_month.value)
+            let apm = parseInt(allowance_per_month.value)
+
+            if(retirement < 0) {
+                console.clear()
+                let step = Math.pow(10, Math.floor(Math.log10(apm)))
+                while(step > 0) {
+                    while(retirement < 0 && apm > step) {
+                        apm -= step
+                        console.log('testing ' + apm)
+                        allowance_per_month.value = apm
+                        retirement = calculateRetirement()
+                    }
+                    if(retirement == 0) break;
+
+                    if(retirement > 0 && step > 1) {
+                        apm+=step
+                        console.warn('not enough, reverting back to ' + apm)
+                        allowance_per_month.value = apm
+                        retirement = calculateRetirement()
+                    }
+                    step = Math.floor(step/10)
+                }
+                message.innerHTML = 'You need to spend (' + formatMoney(original) + ' - ' + formatMoney(apm) + ' = ) ' + formatMoney(original - apm) + ' less per month.'
+            } else {
+                message.innerHTML = 'No need to fix.'
+            }
+        }
+
+        function formatMoney(money) {
+            return money.toLocaleString(getLang(), {maximumFractionDigits: 2})
+        }
+
+		function getLang() {
+		  if (navigator.languages != undefined)
+		    return navigator.languages[0]
+		  return navigator.language
+		}
+    </script>
+</body>
+
+</html>

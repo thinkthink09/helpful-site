@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tier Pricing Designer</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="Description" content="Simple tier pricing disigner that help you structure your tiered pricing model for small businesses to be able to repond to price inquires consistantly">
+<script data-ad-client="ca-pub-8243563881611636" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<style>
+    body {
+        font-family: sans-serif;
+        font-size: 1.1rem;
+    }
+
+    div {
+        margin: 0.3rem 0.1rem;
+        padding: 0.2rem 0.1rem;
+    }
+
+    input[type='number'] {
+        font-size: 1.1rem;
+        border-radius: 3px;
+        text-align: center;
+        width: 10rem;
+    }
+
+    select {
+        font-size: 1.1rem;
+        border-radius: 3px;
+        text-align: center;
+	    width: 10.5rem;
+	    height: 1.7rem;
+	    border: 2px solid rgb(120, 120, 120);
+	}
+
+    button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 0.1rem 0.2rem;
+		width: 2.5rem;
+    	height: 1.7rem;
+        border-radius: 3px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1.2rem;
+		font-weight: bold;
+		cursor: pointer;
+    }
+
+    .tier-label {
+        font-weight: bold;
+		margin-right: 2rem;
+		font-size: 1.2rem;
+    }
+
+	.tier-used {
+		color: red;
+	}
+
+    b {
+        font-size: 1.5rem;
+    }
+
+	#component {
+		display: none;
+	}
+
+	#howtouse {
+        font-size: 1rem;
+		color: grey;
+	}
+</style>
+</head>
+
+<body>
+	<div id="component">
+	    <div class="tier">
+			<div>
+	        	<label class="tier-label">Tier 1</label>
+			</div>
+			<div style="margin-left: 2rem;">
+				Unit
+		        <input type="number" name="from">
+				~
+		        <input type="number" name="to">
+				*
+		        <input type="number" name="price">
+				<select name="option">
+					<option value="per_unit">Per Unit</option>
+					<option value="flat_fee">Flat Fee</option>
+				</select>
+				<button type="button" name="add" onclick="insertTier(event)">+</button>
+				<button type="button" name="remove" onclick="removeTier(event)">-</button>
+			</div>
+	    </div>
+	</div>
+	<div>
+		<input type="text" name="design_name" id="design_name" placeholder="Name Your Design">
+		<button style="margin-left: 38.5rem;" type="button" name="add" onclick="insertTier(event)">+</button>
+	</div>
+	<form id="tiers">
+
+	</form>
+	<br/>
+	<div>
+		Total Unit Sold:
+		<input type="number" name="total_units" id="total_units" value="5000">
+    </div>
+    <div>
+        <label id="message"></label>
+
+        <br/>
+        <p id="howtouse">
+			How to use:<br/>
+			* populate the Tiers according to your use case, slowly work upwards from bottom tier.<br/>
+			* the form recalculates on every change, work until you get to a point of satisfactory.<br/>
+			* you can name your design and bookmark the page, your Tiers structure will be saved and reloaded when you load by bookmark.<br/><br/>
+			for any bugs please contact <a href = "mailto: alanchou09@gmail.com">alanchou09@gmail.com</a>
+		</p>
+    </div>
+
+    <script>
+		const SampleTierComp = document.getElementById("component")
+		const SampleTiers = [
+			{
+				from: 0,
+				to: 100,
+				price: 250000,
+				option: 'flat_fee'
+			},
+			{
+				from: 101,
+				to: 500,
+				price: 2000,
+				option: 'per_unit'
+			},
+			{
+				from: 501,
+				to: 1000,
+				price: 1500,
+				option: 'per_unit'
+			},
+			{
+				from: 1001,
+				to: 2500,
+				price: 500,
+				option: 'per_unit'
+			},
+			{
+				from: 2501,
+				to: 5000,
+				price: 100,
+				option: 'per_unit'
+			}
+		]
+
+		let tiersData = SampleTiers
+        let form = document.getElementById('tiers')
+        let message = document.getElementById('message')
+        let total_units = document.getElementById('total_units')
+        let design_name = document.getElementById('design_name')
+
+
+		reloadFromUrl()
+		populateForm(tiersData)
+		populateResult()
+
+		form.onchange = function() {
+			tiersData = buildTiersStruct()
+			updateUrl()
+			populateResult()
+		}
+
+		total_units.onchange = function() {
+			updateUrl()
+			populateResult()
+		}
+
+		design_name.onchange = function() {
+			updateUrl()
+		}
+
+		function insertTier(event) {
+			tiersData.splice(parseInt(event.target.value) + 1, 0, {
+				from: 0,
+				to: 0,
+				price: 0,
+				option: 'per_unit'
+			})
+			updateUrl()
+			populateForm(tiersData)
+		}
+
+		function removeTier(event) {
+			tiersData.splice(event.target.value, 1)
+			updateUrl()
+			populateForm(tiersData)
+			populateResult()
+		}
+
+		function populateForm(tiers) {
+			form.innerHTML = ''
+
+			for(let [i, tier] of tiers.entries()) {
+				let newTier = document.createElement('div')
+				newTier.innerHTML = SampleTierComp.innerHTML
+
+				newTier.querySelector('.tier-label').innerHTML = 'Tier ' + (i + 1)
+				newTier.querySelector('input[name="from"]').value = tier.from
+				newTier.querySelector('input[name="to"]').value = tier.to
+				newTier.querySelector('input[name="price"]').value = tier.price
+				newTier.querySelector('select[name="option"]').value = tier.option
+				newTier.querySelector('button[name="add"]').value = i
+				newTier.querySelector('button[name="remove"]').value = i
+
+				form.appendChild(newTier)
+			}
+
+		}
+
+		function buildTiersStruct() {
+			let tiers = []
+			let tierElements = form.querySelectorAll('.tier')
+
+			for(let [i, tierElement] of tierElements.entries()) {
+				tiers.push({
+					from: parseInt(tierElement.querySelector('input[name="from"]').value),
+					to: parseInt(tierElement.querySelector('input[name="to"]').value),
+					price: parseInt(tierElement.querySelector('input[name="price"]').value),
+					option: tierElement.querySelector('select[name="option"]').value
+				})
+			}
+
+			return tiers
+		}
+
+		function calculatePrice(totalUnits, tiersData) {
+			totalPrice = 0
+			for ([i, tier] of tiersData.entries()) {
+				if (totalUnits > tier.from) {
+					let subtotal = 0
+					if (tier.option === 'per_unit')
+						subtotal = tier.price * (Math.min(totalUnits, tier.to) - tier.from)
+					else
+						subtotal = tier.price
+
+					// let tierLabel = form.querySelectorAll('.tier')[i].querySelector('.tier-label')
+					// tierLabel.classList.add('tier-used')
+					// tierLabel.innerHTML += ' (Subtotal: '+subtotal+')'
+					totalPrice = totalPrice + subtotal
+				}
+			}
+			return totalPrice
+		}
+
+		function populateResult() {
+			let totalPrice = calculatePrice(total_units.value, tiersData)
+			message.innerHTML = 'Total Price: <b style="color: red;">' + formatMoney(totalPrice) + '</b>, similar to selling at ' + formatMoney(totalPrice/total_units.value) + ' per unit.'
+		}
+
+		function updateUrl() {
+			let url = new URL(window.location);
+			url.searchParams.set('tiers', JSON.stringify(tiersData));
+			url.searchParams.set('units', total_units.value);
+			url.searchParams.set('name', design_name.value);
+
+			window.history.pushState({}, '', url);
+		}
+
+		function reloadFromUrl() {
+			let url = new URL(window.location);
+			if (url.searchParams.get('tiers'))
+				tiersData = JSON.parse(url.searchParams.get('tiers'));
+
+			if (url.searchParams.get('units'))
+				total_units.value = url.searchParams.get('units');
+
+			design_name.value = url.searchParams.get('name');
+		}
+
+        function formatMoney(money) {
+            return money.toLocaleString(getLang(), {maximumFractionDigits: 2})
+        }
+
+		function getLang() {
+		  	if (navigator.languages != undefined)
+		  		return navigator.languages[0]
+		  	return navigator.language
+		}
+    </script>
+</body>
+
+</html>
