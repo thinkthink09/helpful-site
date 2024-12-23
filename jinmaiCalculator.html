@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<h1>絕世好武功</h1>
+<head>
+  <meta charset="UTF-8" />
+</head>
+<body>
+  <h1>絕世好武功</h1>
 
-<pre>
+  <pre>
 
 純陽真氣              三圈圈方方三圈方方
 灼心訣              方方三
@@ -48,228 +52,230 @@
 混元先天功*     增加經脈格(生命力)到186以及穴位x12格
 真法圈三方圈方三  方三圈方圈三  三方圈三圈方
 
-</pre>
+</pre
+  >
 
-<pre id="output"></pre>
+  <pre id="output"></pre>
 
-<script>
-  list = [
-    "034043430403340304", //真法
-    "33334", // 人蠱蟲巢法
-    "03430", // 解蠱訣
-    "44303", // 避毒訣
-    "043033", // 醉仙訣
-    "404303", // 金針度穴功
-    "430034", // 無跡心訣
-    "43044", // 洗隨功
-    "44033", // 奪魄功
-    "044344000", // 易筋經「梵」
-    "034034", // 易筋經
-    "443343", // 爐火鍛體術
-    "0034", // 蓮花落
-    "333444000", // 金剛護體神功
-    "043404", // 化龍功
-    "043003", // 五覺功
-    "300443", // 玄火劫心功
-    "304403", // 紫霞劍氣
-    "344043", // 清心訣
-    "444000", // 地藏伏魔勁
-    "03344", // 偷天換日功
-    "443", // 灼心訣
-    "043", // 寒冰訣
-    "34343", // 搬血鍛體訣
-    "000304", // 華嚴地藏經
-  ];
+  <script>
+    const allSkills = [
+      { name: "真法", value: "034043430403340304" },
+      "33334", // 人蠱蟲巢法
+      "03430", // 解蠱訣
+      "44303", // 避毒訣
+      "043033", // 醉仙訣
+      "404303", // 金針度穴功
+      "430034", // 無跡心訣
+      "43044", // 洗隨功
+      "44033", // 奪魄功
+      "044344000", // 易筋經「梵」
+      "034034", // 易筋經
+      "443343", // 爐火鍛體術
+      "0034", // 蓮花落
+      "333444000", // 金剛護體神功
+      "043404", // 化龍功
+      "043003", // 五覺功
+      "300443", // 玄火劫心功
+      "304403", // 紫霞劍氣
+      "344043", // 清心訣
+      "444000", // 地藏伏魔勁
+      "03344", // 偷天換日功
+      "443", // 灼心訣
+      "043", // 寒冰訣
+      "34343", // 搬血鍛體訣
+      "000304", // 華嚴地藏經
+    ];
 
-  function findBestWithinMax(list, max) {
-    let latest = "";
-    let supported = [];
+    function findBestWithinMax(list, max) {
+      let latest = "";
+      let supported = [];
 
-    for (let i = 0; i < list.length; i++) {
-      let shortest = shortestSuperstring([...supported, list[i]]);
-      if (shortest.length <= max) {
-        latest = shortest;
-        supported.push(list[i]);
-      }
-    }
-
-    return {
-      shortest: latest,
-      length: latest.length,
-      supported,
-    };
-  }
-
-  function findShortest(list) {
-    return findShortestHelper("", list);
-  }
-
-  function findShortestHelper(current, remainingList) {
-    if (remainingList.length == 0) {
-      return current;
-    }
-
-    let shortest = null;
-    let winner = null;
-
-    remainingList.forEach((item, i) => {
-      let short = findShortestHelper(shortestMerge(current, item), [
-        ...remainingList.slice(0, i),
-        ...remainingList.slice(i + 1),
-      ]);
-
-      if (shortest == null || short.length < shortest.length) {
-        shortest = short;
-        winner = i;
-      }
-    });
-
-    return shortest;
-  }
-
-  function shortestMerge(str1, str2) {
-    let p1 = 0;
-    let p2 = 0;
-
-    let save1 = 0;
-
-    while (p1 < str1.length && p2 < str2.length) {
-      if (str1.charAt(p1) == str2.charAt(p2)) {
-        p1++;
-        p2++;
-        save1++;
-      } else if (p2 == 0) {
-        p1++;
-      } else {
-        p2 = 0;
-        save1 = 0;
-      }
-    }
-
-    p1 = 0;
-    p2 = 0;
-    let save2 = 0;
-
-    while (p2 < str2.length && p1 < str1.length) {
-      if (str2.charAt(p2) == str1.charAt(p1)) {
-        p2++;
-        p1++;
-        save2++;
-      } else if (p1 == 0) {
-        p2++;
-      } else {
-        p1 = 0;
-        save2 = 0;
-      }
-    }
-
-    if (save1 < save2) {
-      if (save2 >= str1.length) {
-        return str2;
-      }
-      return str2.substring(0, str2.length - save2) + str1;
-    }
-
-    if (save1 >= str2.length) {
-      return str1;
-    }
-    return str1.substring(0, str1.length - save1) + str2;
-  }
-
-  // leetcode
-  function shortestSuperstring(words) {
-    const n = words.length;
-
-    // Step 1: Calculate the overlap between each pair of words
-    const overlap = Array.from({ length: n }, () => Array(n).fill(0));
-    for (let i = 0; i < n; i++) {
-      for (let j = 0; j < n; j++) {
-        if (i !== j) {
-          overlap[i][j] = getOverlap(words[i], words[j]);
+      for (let i = 0; i < list.length; i++) {
+        let shortest = shortestSuperstring([...supported, list[i]]);
+        if (shortest.length <= max) {
+          latest = shortest;
+          supported.push(list[i]);
         }
       }
+
+      return {
+        shortest: latest,
+        length: latest.length,
+        supported,
+      };
     }
 
-    // Step 2: Initialize DP and parent tables
-    const dp = Array.from({ length: 1 << n }, () => Array(n).fill(Infinity));
-    const parent = Array.from({ length: 1 << n }, () => Array(n).fill(-1));
-
-    for (let i = 0; i < n; i++) {
-      dp[1 << i][i] = words[i].length;
+    function findShortest(list) {
+      return findShortestHelper("", list);
     }
 
-    // Step 3: Fill DP table using bitmasking
-    for (let mask = 1; mask < 1 << n; mask++) {
+    function findShortestHelper(current, remainingList) {
+      if (remainingList.length == 0) {
+        return current;
+      }
+
+      let shortest = null;
+      let winner = null;
+
+      remainingList.forEach((item, i) => {
+        let short = findShortestHelper(shortestMerge(current, item), [
+          ...remainingList.slice(0, i),
+          ...remainingList.slice(i + 1),
+        ]);
+
+        if (shortest == null || short.length < shortest.length) {
+          shortest = short;
+          winner = i;
+        }
+      });
+
+      return shortest;
+    }
+
+    function shortestMerge(str1, str2) {
+      let p1 = 0;
+      let p2 = 0;
+
+      let save1 = 0;
+
+      while (p1 < str1.length && p2 < str2.length) {
+        if (str1.charAt(p1) == str2.charAt(p2)) {
+          p1++;
+          p2++;
+          save1++;
+        } else if (p2 == 0) {
+          p1++;
+        } else {
+          p2 = 0;
+          save1 = 0;
+        }
+      }
+
+      p1 = 0;
+      p2 = 0;
+      let save2 = 0;
+
+      while (p2 < str2.length && p1 < str1.length) {
+        if (str2.charAt(p2) == str1.charAt(p1)) {
+          p2++;
+          p1++;
+          save2++;
+        } else if (p1 == 0) {
+          p2++;
+        } else {
+          p1 = 0;
+          save2 = 0;
+        }
+      }
+
+      if (save1 < save2) {
+        if (save2 >= str1.length) {
+          return str2;
+        }
+        return str2.substring(0, str2.length - save2) + str1;
+      }
+
+      if (save1 >= str2.length) {
+        return str1;
+      }
+      return str1.substring(0, str1.length - save1) + str2;
+    }
+
+    // leetcode
+    function shortestSuperstring(words) {
+      const n = words.length;
+
+      // Step 1: Calculate the overlap between each pair of words
+      const overlap = Array.from({ length: n }, () => Array(n).fill(0));
       for (let i = 0; i < n; i++) {
-        if ((mask & (1 << i)) === 0) continue; // skip if word `i` is not in the mask
-        const prevMask = mask ^ (1 << i); // remove the current word from mask
         for (let j = 0; j < n; j++) {
-          if ((prevMask & (1 << j)) === 0) continue; // skip if word `j` is not in the mask
-          const newLength = dp[prevMask][j] + overlap[j][i];
-          if (newLength < dp[mask][i]) {
-            dp[mask][i] = newLength;
-            parent[mask][i] = j;
+          if (i !== j) {
+            overlap[i][j] = getOverlap(words[i], words[j]);
           }
         }
       }
-    }
 
-    // Step 4: Find the minimum length superstring
-    let lastWord = -1;
-    let minLength = Infinity;
-    const finalMask = (1 << n) - 1;
+      // Step 2: Initialize DP and parent tables
+      const dp = Array.from({ length: 1 << n }, () => Array(n).fill(Infinity));
+      const parent = Array.from({ length: 1 << n }, () => Array(n).fill(-1));
 
-    for (let i = 0; i < n; i++) {
-      if (dp[finalMask][i] < minLength) {
-        minLength = dp[finalMask][i];
-        lastWord = i;
+      for (let i = 0; i < n; i++) {
+        dp[1 << i][i] = words[i].length;
       }
-    }
 
-    // Step 5: Reconstruct the shortest superstring
-    let mask = finalMask;
-    const sequence = [];
-
-    while (mask > 0) {
-      sequence.push(lastWord);
-      const prev = lastWord;
-      lastWord = parent[mask][lastWord];
-      mask ^= 1 << prev; // remove the last word from the mask
-    }
-
-    sequence.reverse(); // reverse the sequence to get the correct order
-
-    // Step 6: Build the superstring using the sequence and overlaps
-    let result = words[sequence[0]];
-    for (let i = 1; i < sequence.length; i++) {
-      const overlapLen = overlap[sequence[i - 1]][sequence[i]];
-      result += words[sequence[i]].substring(
-        words[sequence[i]].length - overlapLen
-      );
-    }
-
-    return result;
-  }
-
-  // Helper function to calculate the overlap between two words
-  function getOverlap(a, b) {
-    for (let len = Math.min(a.length, b.length); len > 0; len--) {
-      if (a.endsWith(b.substring(0, len))) {
-        return b.length - len;
+      // Step 3: Fill DP table using bitmasking
+      for (let mask = 1; mask < 1 << n; mask++) {
+        for (let i = 0; i < n; i++) {
+          if ((mask & (1 << i)) === 0) continue; // skip if word `i` is not in the mask
+          const prevMask = mask ^ (1 << i); // remove the current word from mask
+          for (let j = 0; j < n; j++) {
+            if ((prevMask & (1 << j)) === 0) continue; // skip if word `j` is not in the mask
+            const newLength = dp[prevMask][j] + overlap[j][i];
+            if (newLength < dp[mask][i]) {
+              dp[mask][i] = newLength;
+              parent[mask][i] = j;
+            }
+          }
+        }
       }
+
+      // Step 4: Find the minimum length superstring
+      let lastWord = -1;
+      let minLength = Infinity;
+      const finalMask = (1 << n) - 1;
+
+      for (let i = 0; i < n; i++) {
+        if (dp[finalMask][i] < minLength) {
+          minLength = dp[finalMask][i];
+          lastWord = i;
+        }
+      }
+
+      // Step 5: Reconstruct the shortest superstring
+      let mask = finalMask;
+      const sequence = [];
+
+      while (mask > 0) {
+        sequence.push(lastWord);
+        const prev = lastWord;
+        lastWord = parent[mask][lastWord];
+        mask ^= 1 << prev; // remove the last word from the mask
+      }
+
+      sequence.reverse(); // reverse the sequence to get the correct order
+
+      // Step 6: Build the superstring using the sequence and overlaps
+      let result = words[sequence[0]];
+      for (let i = 1; i < sequence.length; i++) {
+        const overlapLen = overlap[sequence[i - 1]][sequence[i]];
+        result += words[sequence[i]].substring(
+          words[sequence[i]].length - overlapLen
+        );
+      }
+
+      return result;
     }
-    return b.length;
-  }
 
-  // console.log(shortestMerge('1234', '4321'))
+    // Helper function to calculate the overlap between two words
+    function getOverlap(a, b) {
+      for (let len = Math.min(a.length, b.length); len > 0; len--) {
+        if (a.endsWith(b.substring(0, len))) {
+          return b.length - len;
+        }
+      }
+      return b.length;
+    }
 
-  // console.log(shortestSuperstring(list))
+    // console.log(shortestMerge('1234', '4321'))
 
-  console.log(findBestWithinMax(list, 30));
+    // console.log(shortestSuperstring(list))
 
-  document.getElementById("output").innerHTML = JSON.stringify(
-    findBestWithinMax(list, 45),
-    null,
-    2
-  );
-</script>
+    console.log(findBestWithinMax(list, 30));
+
+    document.getElementById("output").innerHTML = JSON.stringify(
+      findBestWithinMax(list, 45),
+      null,
+      2
+    );
+  </script>
+</body>
