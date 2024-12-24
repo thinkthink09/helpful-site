@@ -1,115 +1,311 @@
 <!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
+  <title>絕世好武功 經脈計算工具</title>
+  <style>
+    body {
+      margin: 1rem;
+    }
+
+    .content {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    #all-skills {
+      max-height: min-content;
+      overflow: auto;
+    }
+
+    #all-skills h3:first-child {
+      margin-top: 0;
+    }
+
+    .cart {
+      width: 50vw;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      overflow: auto;
+    }
+  </style>
 </head>
 <body>
-  <h1>絕世好武功 ◯□△</h1>
+  <h1>絕世好武功 經脈計算工具</h1>
+  <div class="content">
+    <div id="all-skills">
+      <h3 class="class">純陽</h3>
 
-  <pre>
-    純陽
+      <label>灼心訣 <i>方方角</i></label>
+      <br />
 
-    灼心訣 □□△
-    玄火劫心功 △◯◯□□△
-    洗髓功 □△◯□□
-    武當純陽功 □△◯□△◯
-    紫薇七星訣 ◯◯◯△□◯
-    地藏伏魔勁 □□□◯◯◯
-    華嚴地藏經 ◯◯◯△◯□
-    爐火鍛體術 □□△△□△
-    霸王舉鼎神功 △△□□△□
+      <label>玄火劫心功 <i>角圈圈方方角</i></label>
+      <br />
 
-    玄陰
+      <label>洗髓功 <i>方角圈方方</i> </label>
+      <br />
 
-    寒冰訣 ◯□△
-    清心訣 △□□◯□△
-    五覺功 ◯□△◯◯△
-    玲瓏訣 ◯◯△
-    轉星換斗神功 ◯◯△◯□◯
-    竟日不全功 △◯□◯△
-    永夜殺法 △△□◯◯
+      <label>武當純陽功 <i>方角圈方角圈</i> </label>
+      <br />
 
-    混元
+      <label>紫薇七星訣 <i>圈圈圈角方圈</i></label>
+      <br />
 
-    吐納法 ◯△□
-    醉仙訣 ◯□△◯△△
-    易筋經 ◯△□◯△□
-    醉意功 ◯△△
-    混元一氣功 △□◯△□
-    羅漢伏魔功 △△□□◯◯
-    金剛護體神功 △△△□□□◯◯◯
-    易筋經「梵」 ◯□□△□□◯◯◯
-    蓮花落 ◯◯△□
-    混元先天功 無
+      <label>地藏伏魔勁 <i>方方方圈圈圈</i></label>
+      <br />
 
-    毒煞
+      <label>華嚴地藏經 <i>圈圈圈角圈方</i></label>
+      <br />
 
-    避毒訣 □□△◯△
-    奪魄功 □□◯△△
-    解蠱訣 ◯△□△◯
+      <label>爐火鍛體術 <i>方方角角方角</i></label>
+      <br />
 
-    綜合內功
+      <label>霸王舉鼎神功 <i>角角方方角方</i></label>
+      <br />
 
-    化龍功 ◯□△□◯□
-    血煞吐納功 △△□◯△
-    金針度穴功 □◯□△◯△
-    偷天換日功 ◯△△□□
-    馭獸訣 □◯□
-    形意五禽功 △□◯□△
-    玄龜養生術 □□△△
-    搬血鍛體訣 △□△□△
-    擒龍伏虎功 △□◯◯
-    武當太和功 □◯△◯△◯□
-    無跡心訣 □△◯◯△□
-    紫霞劍氣 △◯□□◯△
-    真法 ◯△□◯□ △□△◯□◯△ △□◯△◯□
-    奉劍訣 無
-    人蠱蟲巢法 △△△△□
+      <h3 class="class">玄陰</h3>
 
+      <label>寒冰訣 <i>圈方角</i></label>
+      <br />
 
+      <label>清心訣 <i>角方方圈方角</i></label>
+      <br />
 
-</pre
-  >
+      <label>五覺功 <i>圈方角圈圈角</i></label>
+      <br />
 
-  <pre id="output"></pre>
+      <label>玲瓏訣 <i>圈圈角</i></label>
+      <br />
 
+      <label>轉星換斗神功 <i>圈圈角圈方圈</i></label>
+      <br />
+
+      <label>竟日不全功 <i>角圈方圈角</i></label>
+      <br />
+
+      <label>永夜殺法 <i>角角方圈圈</i></label>
+      <br />
+
+      <h3 class="class">混元</h3>
+
+      <label>吐納法 <i>圈角方</i></label>
+      <br />
+
+      <label>醉仙訣 <i>圈方角圈角角</i></label>
+      <br />
+
+      <label>易筋經 <i>圈角方圈角方</i></label>
+      <br />
+
+      <label>醉意功 <i>圈角角</i></label>
+      <br />
+
+      <label>混元一氣功 <i>角方圈角方</i></label>
+      <br />
+
+      <label>羅漢伏魔功 <i>角角方方圈圈</i></label>
+      <br />
+
+      <label>金剛護體神功 <i>角角角方方方圈圈圈</i></label>
+      <br />
+
+      <label>易筋經「梵」 <i>圈方方角方方圈圈圈</i></label>
+      <br />
+
+      <label>蓮花落 <i>圈圈角方</i></label>
+      <br />
+
+      <label>混元先天功 <i>無</i></label>
+      <br />
+
+      <h3 class="class">毒煞</h3>
+
+      <label>避毒訣 <i>方方角圈角</i></label>
+      <br />
+
+      <label>奪魄功 <i>方方圈角角</i></label>
+      <br />
+
+      <label>解蠱訣 <i>圈角方角圈</i></label>
+      <br />
+
+      <h3 class="class">綜合內功</h3>
+
+      <label>化龍功 <i>圈方角方圈方</i></label>
+      <br />
+
+      <label>血煞吐納功 <i>角角方圈角</i></label>
+      <br />
+
+      <label>金針度穴功 <i>方圈方角圈角</i></label>
+      <br />
+
+      <label>偷天換日功 <i>圈角角方方</i></label>
+      <br />
+
+      <label>馭獸訣 <i>方圈方</i></label>
+      <br />
+
+      <label>形意五禽功 <i>角方圈方角</i></label>
+      <br />
+
+      <label>玄龜養生術 <i>方方角角</i></label>
+      <br />
+
+      <label>搬血鍛體訣 <i>角方角方角</i></label>
+      <br />
+
+      <label>擒龍伏虎功 <i>角方圈圈</i></label>
+      <br />
+
+      <label>武當太和功 <i>方圈角圈角圈方</i></label>
+      <br />
+
+      <label>無跡心訣 <i>方角圈圈角方</i></label>
+      <br />
+
+      <label>紫霞劍氣 <i>角圈方方圈角</i></label>
+      <br />
+
+      <label>真法 <i>圈角方圈方角方角圈方圈角角方圈角圈方</i></label>
+      <br />
+
+      <label>奉劍訣 <i>無</i></label>
+      <br />
+
+      <label>人蠱蟲巢法 <i>角角角角方</i></label>
+      <br />
+    </div>
+
+    <div class="cart">
+      <div>
+        <label for="input">按照喜好順序貼上內功+空格+穴位</label>
+        <br />
+        <label for="input"><i>(新功法或逆練請自行修改穴位)</i></label>
+      </div>
+      <textarea id="input" name="skills" rows="15" cols="50">
+真法 圈角方圈方角方角圈方圈角角方圈角圈方
+易筋經「梵」 圈方方角方方圈圈圈
+無跡心訣 方角圈圈角方
+紫霞劍氣 角圈方方圈角
+武當太和功 方圈角圈角圈方
+</textarea
+      >
+      <div>
+        <label for="count">穴位數 (20 30 45):</label>
+        <input type="number" id="maxSize" value="45" />
+      </div>
+      <button type="button" onclick="calculate()">計算</button>
+
+      <div id="result-display" style="display: none">
+        <label for="output">穴位順序:</label>
+        <pre id="output"></pre>
+
+        <label for="skills">激活功法:</label>
+        <pre id="skills"></pre>
+      </div>
+    </div>
+  </div>
   <script>
     const allSkills = [
-      { name: "真法", value: "034043430403340304" },
-      "33334", // 人蠱蟲巢法
-      "03430", // 解蠱訣
-      "44303", // 避毒訣
-      "043033", // 醉仙訣
-      "404303", // 金針度穴功
-      "430034", // 無跡心訣
-      "43044", // 洗隨功
-      "44033", // 奪魄功
-      "044344000", // 易筋經「梵」
-      "034034", // 易筋經
-      "443343", // 爐火鍛體術
-      "0034", // 蓮花落
-      "333444000", // 金剛護體神功
-      "043404", // 化龍功
-      "043003", // 五覺功
-      "300443", // 玄火劫心功
-      "304403", // 紫霞劍氣
-      "344043", // 清心訣
-      "444000", // 地藏伏魔勁
-      "03344", // 偷天換日功
-      "443", // 灼心訣
-      "043", // 寒冰訣
-      "34343", // 搬血鍛體訣
-      "000304", // 華嚴地藏經
+      //純陽
+      { name: "灼心訣", value: "方方角" },
+      { name: "玄火劫心功", value: "角圈圈方方角" },
+      { name: "洗髓功", value: "方角圈方方" },
+      { name: "武當純陽功", value: "方角圈方角圈" },
+      { name: "紫薇七星訣", value: "圈圈圈角方圈" },
+      { name: "地藏伏魔勁", value: "方方方圈圈圈" },
+      { name: "華嚴地藏經", value: "圈圈圈角圈方" },
+      { name: "爐火鍛體術", value: "方方角角方角" },
+      { name: "霸王舉鼎神功", value: "角角方方角方" },
+      //玄陰
+      { name: "寒冰訣", value: "圈方角" },
+      { name: "清心訣", value: "角方方圈方角" },
+      { name: "五覺功", value: "圈方角圈圈角" },
+      { name: "玲瓏訣", value: "圈圈角" },
+      { name: "轉星換斗神功", value: "圈圈角圈方圈" },
+      { name: "竟日不全功", value: "角圈方圈角" },
+      { name: "永夜殺法", value: "角角方圈圈" },
+      //混元
+      { name: "吐納法", value: "圈角方" },
+      { name: "醉仙訣", value: "圈方角圈角角" },
+      { name: "易筋經", value: "圈角方圈角方" },
+      { name: "醉意功", value: "圈角角" },
+      { name: "混元一氣功", value: "角方圈角方" },
+      { name: "羅漢伏魔功", value: "角角方方圈圈" },
+      { name: "金剛護體神功", value: "角角角方方方圈圈圈" },
+      { name: "易筋經「梵」", value: "圈方方角方方圈圈圈" },
+      { name: "蓮花落", value: "圈圈角方" },
+      { name: "混元先天功", value: "無" },
+      //毒煞
+      { name: "避毒訣", value: "方方角圈角" },
+      { name: "奪魄功", value: "方方圈角角" },
+      { name: "解蠱訣", value: "圈角方角圈" },
+      //綜合內功
+      { name: "化龍功", value: "圈方角方圈方" },
+      { name: "血煞吐納功", value: "角角方圈角" },
+      { name: "金針度穴功", value: "方圈方角圈角" },
+      { name: "偷天換日功", value: "圈角角方方" },
+      { name: "馭獸訣", value: "方圈方" },
+      { name: "形意五禽功", value: "角方圈方角" },
+      { name: "玄龜養生術", value: "方方角角" },
+      { name: "搬血鍛體訣", value: "角方角方角" },
+      { name: "擒龍伏虎功", value: "角方圈圈" },
+      { name: "武當太和功", value: "方圈角圈角圈方" },
+      { name: "無跡心訣", value: "方角圈圈角方" },
+      { name: "紫霞劍氣", value: "角圈方方圈角" },
+      { name: "真法", value: "圈角方圈方 角方角圈方圈角 角方圈角圈方" },
+      { name: "奉劍訣", value: "無" },
+      { name: "人蠱蟲巢法", value: "角角角角方" },
     ];
+
+    function calculate() {
+      let input = document.getElementById("input").value;
+      let maxSize = document.getElementById("maxSize").value;
+
+      let list = [];
+      input.split("\n").forEach((item) => {
+        if (!/^.*?\s.*?/.test(item)) {
+          return;
+        }
+        list.push({
+          name: item.split(" ")[0],
+          value: item.split(" ")[1],
+        });
+      });
+
+      let result = findBestWithinMax(list, maxSize);
+
+      console.log(result);
+
+      document.getElementById("result-display").style.display = "block";
+
+      document.getElementById("output").innerHTML = result.shortest + `(共計${result.length}穴位)`;
+
+      let enabledSkills = [];
+      list.forEach((item) => {
+        if (result.supported.includes(item.value)) {
+          enabledSkills.push(item.name);
+        }
+      });
+
+      console.log(enabledSkills);
+
+      document.getElementById("skills").innerHTML = enabledSkills.join("\n");
+    }
 
     function findBestWithinMax(list, max) {
       let latest = "";
       let supported = [];
 
       for (let i = 0; i < list.length; i++) {
-        let shortest = shortestSuperstring([...supported, list[i]]);
+        let shortest = shortestSuperstring([...supported, list[i].value]);
         if (shortest.length <= max) {
           latest = shortest;
-          supported.push(list[i]);
+          supported.push(list[i].value);
         }
       }
 
@@ -120,88 +316,10 @@
       };
     }
 
-    function findShortest(list) {
-      return findShortestHelper("", list);
-    }
-
-    function findShortestHelper(current, remainingList) {
-      if (remainingList.length == 0) {
-        return current;
-      }
-
-      let shortest = null;
-      let winner = null;
-
-      remainingList.forEach((item, i) => {
-        let short = findShortestHelper(shortestMerge(current, item), [
-          ...remainingList.slice(0, i),
-          ...remainingList.slice(i + 1),
-        ]);
-
-        if (shortest == null || short.length < shortest.length) {
-          shortest = short;
-          winner = i;
-        }
-      });
-
-      return shortest;
-    }
-
-    function shortestMerge(str1, str2) {
-      let p1 = 0;
-      let p2 = 0;
-
-      let save1 = 0;
-
-      while (p1 < str1.length && p2 < str2.length) {
-        if (str1.charAt(p1) == str2.charAt(p2)) {
-          p1++;
-          p2++;
-          save1++;
-        } else if (p2 == 0) {
-          p1++;
-        } else {
-          p2 = 0;
-          save1 = 0;
-        }
-      }
-
-      p1 = 0;
-      p2 = 0;
-      let save2 = 0;
-
-      while (p2 < str2.length && p1 < str1.length) {
-        if (str2.charAt(p2) == str1.charAt(p1)) {
-          p2++;
-          p1++;
-          save2++;
-        } else if (p1 == 0) {
-          p2++;
-        } else {
-          p1 = 0;
-          save2 = 0;
-        }
-      }
-
-      if (save1 < save2) {
-        if (save2 >= str1.length) {
-          return str2;
-        }
-        return str2.substring(0, str2.length - save2) + str1;
-      }
-
-      if (save1 >= str2.length) {
-        return str1;
-      }
-      return str1.substring(0, str1.length - save1) + str2;
-    }
-
-    // leetcode
     function shortestSuperstring(words) {
-      const n = words.length;
+      let n = words.length;
 
-      // Step 1: Calculate the overlap between each pair of words
-      const overlap = Array.from({ length: n }, () => Array(n).fill(0));
+      let overlap = Array.from({ length: n }, () => Array(n).fill(0));
       for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) {
           if (i !== j) {
@@ -210,22 +328,20 @@
         }
       }
 
-      // Step 2: Initialize DP and parent tables
-      const dp = Array.from({ length: 1 << n }, () => Array(n).fill(Infinity));
-      const parent = Array.from({ length: 1 << n }, () => Array(n).fill(-1));
+      let dp = Array.from({ length: 1 << n }, () => Array(n).fill(Infinity));
+      let parent = Array.from({ length: 1 << n }, () => Array(n).fill(-1));
 
       for (let i = 0; i < n; i++) {
         dp[1 << i][i] = words[i].length;
       }
 
-      // Step 3: Fill DP table using bitmasking
       for (let mask = 1; mask < 1 << n; mask++) {
         for (let i = 0; i < n; i++) {
-          if ((mask & (1 << i)) === 0) continue; // skip if word `i` is not in the mask
-          const prevMask = mask ^ (1 << i); // remove the current word from mask
+          if ((mask & (1 << i)) === 0) continue;
+          let prevMask = mask ^ (1 << i);
           for (let j = 0; j < n; j++) {
-            if ((prevMask & (1 << j)) === 0) continue; // skip if word `j` is not in the mask
-            const newLength = dp[prevMask][j] + overlap[j][i];
+            if ((prevMask & (1 << j)) === 0) continue;
+            let newLength = dp[prevMask][j] + overlap[j][i];
             if (newLength < dp[mask][i]) {
               dp[mask][i] = newLength;
               parent[mask][i] = j;
@@ -234,10 +350,9 @@
         }
       }
 
-      // Step 4: Find the minimum length superstring
       let lastWord = -1;
       let minLength = Infinity;
-      const finalMask = (1 << n) - 1;
+      let finalMask = (1 << n) - 1;
 
       for (let i = 0; i < n; i++) {
         if (dp[finalMask][i] < minLength) {
@@ -246,32 +361,27 @@
         }
       }
 
-      // Step 5: Reconstruct the shortest superstring
       let mask = finalMask;
-      const sequence = [];
+      let sequence = [];
 
       while (mask > 0) {
         sequence.push(lastWord);
-        const prev = lastWord;
+        let prev = lastWord;
         lastWord = parent[mask][lastWord];
-        mask ^= 1 << prev; // remove the last word from the mask
+        mask ^= 1 << prev;
       }
 
-      sequence.reverse(); // reverse the sequence to get the correct order
+      sequence.reverse();
 
-      // Step 6: Build the superstring using the sequence and overlaps
       let result = words[sequence[0]];
       for (let i = 1; i < sequence.length; i++) {
-        const overlapLen = overlap[sequence[i - 1]][sequence[i]];
-        result += words[sequence[i]].substring(
-          words[sequence[i]].length - overlapLen
-        );
+        let overlapLen = overlap[sequence[i - 1]][sequence[i]];
+        result += words[sequence[i]].substring(words[sequence[i]].length - overlapLen);
       }
 
       return result;
     }
 
-    // Helper function to calculate the overlap between two words
     function getOverlap(a, b) {
       for (let len = Math.min(a.length, b.length); len > 0; len--) {
         if (a.endsWith(b.substring(0, len))) {
@@ -280,17 +390,5 @@
       }
       return b.length;
     }
-
-    // console.log(shortestMerge('1234', '4321'))
-
-    // console.log(shortestSuperstring(list))
-
-    console.log(findBestWithinMax(list, 30));
-
-    document.getElementById("output").innerHTML = JSON.stringify(
-      findBestWithinMax(list, 45),
-      null,
-      2
-    );
   </script>
 </body>
